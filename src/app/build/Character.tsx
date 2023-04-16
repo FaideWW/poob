@@ -1,28 +1,50 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { resolveCharacterStats } from "./calcs";
+import { Modifier } from "./modifiers";
+import { parseMods } from "./parser";
 import {
   BaseClass,
   CLASS_DISPLAY_NAMES,
   Character,
   createCharacter,
 } from "./stats";
+import useAutosizeTextarea from "./useAutosizeTextarea";
 
 const Character = () => {
   const [character, setCharacter] = useState<Character | null>(null);
+  const [modText, setModText] = useState<string>("");
+  const [mods, setMods] = useState<Modifier[]>([]);
+
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  useAutosizeTextarea(textareaRef.current, modText);
 
   const handleSelectBaseClass = (e: React.FormEvent<HTMLSelectElement>) => {
     const baseClass = e.currentTarget.value as BaseClass | "";
     if (baseClass === "") return;
-    setCharacter(resolveCharacterStats(createCharacter(baseClass)));
+    setCharacter(resolveCharacterStats(createCharacter(baseClass), mods));
+  };
+
+  const handleUpdateMods = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setModText(e.currentTarget.value);
+    const nextMods = parseMods(e.currentTarget.value);
+    console.log(`successfully parsed ${nextMods.length} mods`);
+    setMods(nextMods);
+    if (character !== null) {
+      setCharacter(resolveCharacterStats(character, nextMods));
+    }
   };
 
   return (
     <div className="w-full">
       <section className="my-4 mx-auto w-1/2">
         <h2>Choose base class (resets current character):</h2>
-        <select onChange={handleSelectBaseClass} className="p-2 w-full">
+        <select
+          onChange={handleSelectBaseClass}
+          className="p-2 w-full dark:text-slate-800"
+        >
           <option value="">-- Select a base class --</option>
           <option value="MARAUDER">{CLASS_DISPLAY_NAMES.MARAUDER}</option>
           <option value="DUELIST">{CLASS_DISPLAY_NAMES.DUELIST}</option>
@@ -73,7 +95,12 @@ const Character = () => {
             </div>
             <div className="grow">
               <h3 className="text-xl font-bold">Modifiers</h3>
-              <textarea className="w-full" />
+              <textarea
+                ref={textareaRef}
+                className="w-full dark:text-slate-800"
+                value={modText}
+                onChange={handleUpdateMods}
+              />
             </div>
           </div>
         </section>
