@@ -1,18 +1,10 @@
-import Image from "next/image";
+import Character from "./Character";
 
-export default async function Page({
-
-}) {
-  const cat = await fetch('https://cataas.com/cat?json=true');
-
-  if (!cat.ok) { throw new Error('No cat :('); }
-
-  const catJson = await cat.json();
-
+export default async function Page({}) {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      Hello world
-      <img src={`https://cataas.com${catJson.url}`} alt="cat" />
+    <main className="flex min-h-screen flex-col items-center justify-start p-24">
+      <h1 className="text-4xl font-bold">Character builder</h1>
+      <Character />
     </main>
   );
 }
