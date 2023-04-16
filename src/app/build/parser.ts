@@ -17,7 +17,7 @@ const modTargetPatterns: ModTargetPattern[] = [
   [/intelligence/, "intelligence"],
   [/maximum life/, "life"],
   [/maximum mana/, "mana"],
-  [/maxmimum energy shield/, "energyShield"],
+  [/maximum energy shield/, "energyShield"],
   [/accuracy rating/, "accuracyRating"],
   [/evasion rating/, "evasionRating"],
 ];
