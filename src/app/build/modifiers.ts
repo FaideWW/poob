@@ -20,6 +20,10 @@ export interface Modifier {
   value: number | ((character: Character) => number);
 }
 
+export function parseModifier(modText: string): Modifier | null {
+  return null;
+}
+
 export const BASE_CHARACTER_MODS: Modifier[] = [
   {
     affectedStat: "life",

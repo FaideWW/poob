@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
+import SkillTree from "./SkillTree";
 import { resolveCharacterStats } from "./calcs";
 import { Modifier } from "./modifiers";
 import { parseMods } from "./parser";
@@ -102,6 +103,9 @@ const Character = () => {
                 onChange={handleUpdateMods}
               />
             </div>
+          </div>
+          <div>
+            <SkillTree />
           </div>
         </section>
       )}
